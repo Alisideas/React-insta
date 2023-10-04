@@ -1,0 +1,1 @@
+export { PluginFileCover } from "./PluginFileCover";
