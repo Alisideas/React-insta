@@ -250,7 +250,7 @@ export const HomePage = () => {
           <p className="footer-sub">
             Have a project in mind? I'd love to hear from you.
           </p>
-          <a href="mailto:alireza@example.com" className="btn btn-primary footer-btn">
+          <a href="mailto:Alirezakbarim@gmail.com" className="btn btn-primary footer-btn">
             Get In Touch
           </a>
           <div className="footer-divider" />
