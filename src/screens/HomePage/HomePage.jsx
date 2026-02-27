@@ -1,7 +1,178 @@
-import React from "react";
+import React, { useState } from "react";
+import emailjs from "@emailjs/browser";
 import "./style.css";
 
+// ─── EmailJS credentials ───────────────────────────────────────────────────
+// 1. Sign up at https://www.emailjs.com (free tier: 200 emails/month)
+// 2. Add an Email Service  (Gmail, Outlook, etc.) → copy Service ID
+// 3. Create an Email Template with these variables:
+//      {{from_name}}  {{from_email}}  {{subject}}  {{message}}
+// 4. Copy the Template ID and your account Public Key
+// Then replace the three placeholders below:
+const EMAILJS_SERVICE_ID  = "YOUR_SERVICE_ID";
+const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+const EMAILJS_PUBLIC_KEY  = "YOUR_PUBLIC_KEY";
+// ──────────────────────────────────────────────────────────────────────────
+
+const inputCls =
+  "w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-white " +
+  "placeholder:text-muted focus:outline-none focus:border-accent/60 " +
+  "focus:bg-white/10 transition-all text-[15px]";
+
+const ContactModal = ({ onClose }) => {
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+
+  const handleChange = (e) =>
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("sending");
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name:  form.name,
+          from_email: form.email,
+          subject:    form.subject,
+          message:    form.message,
+          to_email:   "alirezakbarim@gmail.com",
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-2xl w-full max-w-lg relative"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Modal header */}
+        <div className="flex items-center justify-between px-8 pt-8 pb-6 border-b border-white/10">
+          <div>
+            <h2 className="text-[24px] font-extrabold">
+              Get In <span className="text-accent">Touch</span>
+            </h2>
+            <p className="text-muted text-[14px] mt-1">I'll reply within 24 hours.</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-muted hover:text-white hover:bg-white/10 transition-all text-lg leading-none"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Form body */}
+        <div className="px-8 py-6">
+          {status === "success" ? (
+            <div className="flex flex-col items-center gap-4 py-8 text-center">
+              <div className="w-16 h-16 rounded-full bg-green-500/15 border border-green-500/30 flex items-center justify-center text-[28px]">
+                ✓
+              </div>
+              <p className="text-[18px] font-bold text-white">Message sent!</p>
+              <p className="text-muted text-[14px]">
+                Thanks for reaching out. I'll get back to you soon.
+              </p>
+              <button
+                onClick={onClose}
+                className="mt-2 px-6 py-2 rounded-xl bg-white/5 border border-white/15 text-muted hover:text-white hover:bg-white/10 transition-all text-[14px]"
+              >
+                Close
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <div className="grid grid-cols-2 gap-4 tablet:grid-cols-1">
+                <div className="flex flex-col gap-1">
+                  <label className="text-[13px] text-muted font-medium">Name</label>
+                  <input
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    required
+                    placeholder="Your name"
+                    className={inputCls}
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-[13px] text-muted font-medium">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="your@email.com"
+                    className={inputCls}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-[13px] text-muted font-medium">Subject</label>
+                <input
+                  name="subject"
+                  value={form.subject}
+                  onChange={handleChange}
+                  required
+                  placeholder="What's this about?"
+                  className={inputCls}
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-[13px] text-muted font-medium">Message</label>
+                <textarea
+                  name="message"
+                  value={form.message}
+                  onChange={handleChange}
+                  required
+                  rows={5}
+                  placeholder="Tell me about your project..."
+                  className={`${inputCls} resize-none`}
+                />
+              </div>
+
+              {status === "error" && (
+                <p className="text-red-400 text-[13px] bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
+                  Something went wrong. Please try again or email me directly at{" "}
+                  <a href="mailto:alirezakbarim@gmail.com" className="underline">
+                    alirezakbarim@gmail.com
+                  </a>
+                  .
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="mt-1 w-full py-[14px] rounded-xl text-[15px] font-semibold bg-accent text-white hover:bg-accent-dark transition-colors shadow-[0_0_24px_rgba(224,53,0,0.35)] disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {status === "sending" ? "Sending…" : "Send Message"}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const HomePage = () => {
+  const [contactOpen, setContactOpen] = useState(false);
+
   const skills = [
     { name: "React.js / Next.js", level: 90 },
     { name: "JavaScript", level: 88 },
@@ -82,6 +253,9 @@ export const HomePage = () => {
       <div className="fixed bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="fixed top-[50%] left-[60%] w-[300px] h-[300px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
 
+      {/* Contact modal */}
+      {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
+
       {/* Sticky Glass Navbar */}
       <header className="sticky top-0 z-[100] flex items-center justify-between py-5 px-12 bg-white/5 backdrop-blur-2xl border-b border-white/10 shadow-lg tablet:px-6 tablet:py-4">
         <div className="text-[22px] font-extrabold text-accent tracking-[2px]">AA</div>
@@ -90,7 +264,12 @@ export const HomePage = () => {
           <a href="#skills" className="text-muted text-[15px] font-medium hover:text-white transition-colors">Skills</a>
           <a href="#experience" className="text-muted text-[15px] font-medium hover:text-white transition-colors">Experience</a>
           <a href="#education" className="text-muted text-[15px] font-medium hover:text-white transition-colors">Education</a>
-          <a href="#contact" className="bg-accent/90 backdrop-blur-sm text-white px-[22px] py-[10px] rounded-xl font-semibold hover:bg-accent transition-colors border border-accent/50">Hire Me</a>
+          <button
+            onClick={() => setContactOpen(true)}
+            className="bg-accent/90 backdrop-blur-sm text-white px-[22px] py-[10px] rounded-xl font-semibold hover:bg-accent transition-colors border border-accent/50 cursor-pointer"
+          >
+            Hire Me
+          </button>
         </nav>
       </header>
 
@@ -117,12 +296,12 @@ export const HomePage = () => {
             >
               View Experience
             </a>
-            <a
-              href="#contact"
-              className="inline-block px-8 py-[14px] rounded-xl text-[15px] font-semibold bg-white/5 backdrop-blur-sm border border-white/20 text-white hover:border-accent/60 hover:bg-white/10 transition-all"
+            <button
+              onClick={() => setContactOpen(true)}
+              className="inline-block px-8 py-[14px] rounded-xl text-[15px] font-semibold bg-white/5 backdrop-blur-sm border border-white/20 text-white hover:border-accent/60 hover:bg-white/10 transition-all cursor-pointer"
             >
               Contact Me
-            </a>
+            </button>
           </div>
         </div>
         <div className="flex-shrink-0 relative w-[280px] h-[280px] mobile:w-[200px] mobile:h-[200px]">
@@ -283,12 +462,12 @@ export const HomePage = () => {
             <p className="text-muted text-[16px] mb-10">
               Have a project in mind? I'd love to hear from you.
             </p>
-            <a
-              href="mailto:Alirezakbarim@gmail.com"
-              className="inline-block px-8 py-[14px] rounded-xl text-[16px] font-semibold bg-accent text-white hover:bg-accent-dark transition-colors shadow-[0_0_24px_rgba(224,53,0,0.35)]"
+            <button
+              onClick={() => setContactOpen(true)}
+              className="inline-block px-8 py-[14px] rounded-xl text-[16px] font-semibold bg-accent text-white hover:bg-accent-dark transition-colors shadow-[0_0_24px_rgba(224,53,0,0.35)] cursor-pointer"
             >
               Get In Touch
-            </a>
+            </button>
           </div>
           <div className="h-px bg-white/10 mt-12 mb-6" />
           <p className="text-muted text-[13px]">
