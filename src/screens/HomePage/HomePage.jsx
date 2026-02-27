@@ -2,17 +2,9 @@ import React, { useState } from "react";
 import emailjs from "@emailjs/browser";
 import "./style.css";
 
-// ─── EmailJS credentials ───────────────────────────────────────────────────
-// 1. Sign up at https://www.emailjs.com (free tier: 200 emails/month)
-// 2. Add an Email Service  (Gmail, Outlook, etc.) → copy Service ID
-// 3. Create an Email Template with these variables:
-//      {{from_name}}  {{from_email}}  {{subject}}  {{message}}
-// 4. Copy the Template ID and your account Public Key
-// Then replace the three placeholders below:
-const EMAILJS_SERVICE_ID  = "YOUR_SERVICE_ID";
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-const EMAILJS_PUBLIC_KEY  = "YOUR_PUBLIC_KEY";
-// ──────────────────────────────────────────────────────────────────────────
+const EMAILJS_SERVICE_ID  = "service_4wybl75";
+const EMAILJS_TEMPLATE_ID = "template_cuh0gy8";
+const EMAILJS_PUBLIC_KEY  = "z2tTgeKX1tEBNoZ1n";
 
 const inputCls =
   "w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-white " +
