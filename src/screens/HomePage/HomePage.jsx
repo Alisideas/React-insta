@@ -75,16 +75,22 @@ export const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="sticky top-0 z-[100] flex items-center justify-between py-5 px-12 bg-[rgba(15,15,15,0.9)] backdrop-blur-[10px] border-b border-rim tablet:px-6 tablet:py-4">
+    <div className="min-h-screen flex flex-col bg-[#080810] relative overflow-x-hidden">
+
+      {/* Decorative glow orbs */}
+      <div className="fixed top-[-15%] right-[-10%] w-[600px] h-[600px] bg-accent/20 rounded-full blur-[140px] pointer-events-none" />
+      <div className="fixed bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="fixed top-[50%] left-[60%] w-[300px] h-[300px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
+
+      {/* Sticky Glass Navbar */}
+      <header className="sticky top-0 z-[100] flex items-center justify-between py-5 px-12 bg-white/5 backdrop-blur-2xl border-b border-white/10 shadow-lg tablet:px-6 tablet:py-4">
         <div className="text-[22px] font-extrabold text-accent tracking-[2px]">AA</div>
         <nav className="flex items-center gap-8 tablet:gap-4">
           <a href="#about" className="text-muted text-[15px] font-medium hover:text-white transition-colors">About</a>
           <a href="#skills" className="text-muted text-[15px] font-medium hover:text-white transition-colors">Skills</a>
           <a href="#experience" className="text-muted text-[15px] font-medium hover:text-white transition-colors">Experience</a>
           <a href="#education" className="text-muted text-[15px] font-medium hover:text-white transition-colors">Education</a>
-          <a href="#contact" className="bg-accent text-white px-[22px] py-[10px] rounded-xl font-semibold hover:bg-accent-dark transition-colors">Hire Me</a>
+          <a href="#contact" className="bg-accent/90 backdrop-blur-sm text-white px-[22px] py-[10px] rounded-xl font-semibold hover:bg-accent transition-colors border border-accent/50">Hire Me</a>
         </nav>
       </header>
 
@@ -107,20 +113,20 @@ export const HomePage = () => {
           <div className="flex gap-4 flex-wrap tablet:justify-center">
             <a
               href="#experience"
-              className="inline-block px-8 py-[14px] rounded-xl text-[15px] font-semibold bg-accent text-white hover:bg-accent-dark transition-colors"
+              className="inline-block px-8 py-[14px] rounded-xl text-[15px] font-semibold bg-accent text-white hover:bg-accent-dark transition-colors shadow-[0_0_24px_rgba(224,53,0,0.35)]"
             >
               View Experience
             </a>
             <a
               href="#contact"
-              className="inline-block px-8 py-[14px] rounded-xl text-[15px] font-semibold border-2 border-rim text-white hover:border-accent hover:text-accent transition-colors"
+              className="inline-block px-8 py-[14px] rounded-xl text-[15px] font-semibold bg-white/5 backdrop-blur-sm border border-white/20 text-white hover:border-accent/60 hover:bg-white/10 transition-all"
             >
               Contact Me
             </a>
           </div>
         </div>
         <div className="flex-shrink-0 relative w-[280px] h-[280px] mobile:w-[200px] mobile:h-[200px]">
-          <div className="w-[260px] h-[260px] rounded-full bg-gradient-to-br from-accent to-[#ff6b35] flex items-center justify-center relative z-[1] mobile:w-[180px] mobile:h-[180px]">
+          <div className="w-[260px] h-[260px] rounded-full bg-gradient-to-br from-accent to-[#ff6b35] flex items-center justify-center relative z-[1] shadow-[0_0_60px_rgba(224,53,0,0.4)] mobile:w-[180px] mobile:h-[180px]">
             <span className="text-[72px] font-black text-white tracking-[4px] mobile:text-[52px]">AA</span>
           </div>
           <div className="absolute -top-[10px] -left-[10px] w-[280px] h-[280px] rounded-full border-2 border-dashed border-accent opacity-40 animate-spin-slow mobile:w-[200px] mobile:h-[200px]" />
@@ -128,13 +134,13 @@ export const HomePage = () => {
       </section>
 
       {/* About */}
-      <section className="bg-surface border-t border-b border-rim" id="about">
+      <section className="border-t border-white/[0.08]" id="about">
         <div className="max-w-[1100px] mx-auto px-8 py-24">
           <h2 className="text-[40px] font-extrabold mb-14 text-center mobile:text-[30px]">
             About <span className="text-accent">Me</span>
           </h2>
           <div className="grid grid-cols-2 gap-16 items-center tablet:grid-cols-1 tablet:gap-10">
-            <div>
+            <div className="bg-white/[0.04] backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-xl">
               <p className="text-[16px] text-muted leading-[1.8] mb-4">
                 I'm <strong className="text-white">Alireza</strong>, a passionate web developer and UI/UX
                 designer with a strong background in HTML, CSS, JavaScript, Flutter,
@@ -153,40 +159,41 @@ export const HomePage = () => {
                 <strong className="text-white">Istanbul</strong>!
               </p>
             </div>
-            <div className="flex flex-col gap-8">
-              <div className="flex flex-col gap-1">
-                <span className="text-[48px] font-black leading-none text-accent">5+</span>
-                <span className="text-[14px] text-muted uppercase tracking-[1px]">Years Experience</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-[48px] font-black leading-none text-accent">5</span>
-                <span className="text-[14px] text-muted uppercase tracking-[1px]">Companies Worked At</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-[48px] font-black leading-none text-accent">2</span>
-                <span className="text-[14px] text-muted uppercase tracking-[1px]">Degrees (incl. MEng AI)</span>
-              </div>
+            <div className="flex flex-col gap-6">
+              {[
+                { num: "5+", label: "Years Experience" },
+                { num: "5",  label: "Companies Worked At" },
+                { num: "2",  label: "Degrees (incl. MEng AI)" },
+              ].map(({ num, label }) => (
+                <div
+                  key={label}
+                  className="bg-white/[0.04] backdrop-blur-md border border-white/10 rounded-2xl px-8 py-6 shadow-xl flex items-center gap-6"
+                >
+                  <span className="text-[48px] font-black leading-none text-accent">{num}</span>
+                  <span className="text-[15px] text-muted uppercase tracking-[1px]">{label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       {/* Skills */}
-      <section className="bg-page" id="skills">
+      <section className="border-t border-white/[0.08]" id="skills">
         <div className="max-w-[1100px] mx-auto px-8 py-24">
           <h2 className="text-[40px] font-extrabold mb-14 text-center mobile:text-[30px]">
             My <span className="text-accent">Skills</span>
           </h2>
-          <div className="grid grid-cols-2 gap-y-8 gap-x-16 tablet:grid-cols-1">
+          <div className="bg-white/[0.04] backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-xl grid grid-cols-2 gap-y-8 gap-x-16 tablet:grid-cols-1">
             {skills.map((skill) => (
               <div className="flex flex-col gap-2" key={skill.name}>
                 <div className="flex justify-between">
                   <span className="text-[15px] font-semibold">{skill.name}</span>
                   <span className="text-[14px] font-bold text-accent">{skill.level}%</span>
                 </div>
-                <div className="h-[6px] bg-rim rounded-full overflow-hidden">
+                <div className="h-[6px] bg-white/10 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-accent rounded-full"
+                    className="h-full bg-accent rounded-full shadow-[0_0_8px_rgba(224,53,0,0.6)]"
                     style={{ width: `${skill.level}%` }}
                   />
                 </div>
@@ -197,16 +204,16 @@ export const HomePage = () => {
       </section>
 
       {/* Experience */}
-      <section className="bg-surface border-t border-b border-rim" id="experience">
+      <section className="border-t border-white/[0.08]" id="experience">
         <div className="max-w-[1100px] mx-auto px-8 py-24">
           <h2 className="text-[40px] font-extrabold mb-14 text-center mobile:text-[30px]">
             Work <span className="text-accent">Experience</span>
           </h2>
-          <div className="flex flex-col relative pl-8 border-l-2 border-rim">
+          <div className="flex flex-col relative pl-8 border-l-2 border-white/10">
             {experience.map((job, index) => (
               <div className="relative pb-10 last:pb-0" key={index}>
-                <div className="absolute -left-[41px] top-2 w-[14px] h-[14px] rounded-full bg-accent border-[3px] border-surface z-[1]" />
-                <div className="bg-card border border-rim rounded-xl px-8 py-7 flex flex-col gap-[14px] hover:border-accent transition-colors">
+                <div className="absolute -left-[41px] top-2 w-[14px] h-[14px] rounded-full bg-accent border-[3px] border-[#080810] z-[1] shadow-[0_0_10px_rgba(224,53,0,0.6)]" />
+                <div className="bg-white/[0.04] backdrop-blur-md border border-white/10 rounded-xl px-8 py-7 flex flex-col gap-[14px] hover:border-accent/40 hover:bg-white/[0.07] transition-all shadow-xl">
                   <div className="flex justify-between items-start gap-4 flex-wrap tablet:flex-col">
                     <div>
                       <h3 className="text-[18px] font-bold mb-1">{job.role}</h3>
@@ -221,7 +228,7 @@ export const HomePage = () => {
                   <div className="flex flex-wrap gap-2 mt-2">
                     {job.tags.map((tag) => (
                       <span
-                        className="bg-[rgba(224,53,0,0.12)] text-accent text-[12px] font-semibold px-3 py-1 rounded-full border border-[rgba(224,53,0,0.3)]"
+                        className="bg-accent/10 backdrop-blur-sm text-accent text-[12px] font-semibold px-3 py-1 rounded-full border border-accent/25"
                         key={tag}
                       >
                         {tag}
@@ -236,7 +243,7 @@ export const HomePage = () => {
       </section>
 
       {/* Education */}
-      <section className="bg-page" id="education">
+      <section className="border-t border-white/[0.08]" id="education">
         <div className="max-w-[1100px] mx-auto px-8 py-24">
           <h2 className="text-[40px] font-extrabold mb-14 text-center mobile:text-[30px]">
             My <span className="text-accent">Education</span>
@@ -244,7 +251,7 @@ export const HomePage = () => {
           <div className="grid grid-cols-2 gap-6 tablet:grid-cols-1">
             {education.map((edu, index) => (
               <div
-                className="bg-card border border-rim rounded-xl p-8 flex gap-5 items-start hover:border-accent hover:-translate-y-1 transition-all"
+                className="bg-white/[0.04] backdrop-blur-md border border-white/10 rounded-xl p-8 flex gap-5 items-start hover:border-accent/40 hover:bg-white/[0.07] hover:-translate-y-1 transition-all shadow-xl"
                 key={index}
               >
                 <div className="text-[32px] flex-shrink-0">🎓</div>
@@ -254,7 +261,7 @@ export const HomePage = () => {
                   <span className="text-[13px] text-muted flex items-center gap-[10px] flex-wrap">
                     {edu.period}
                     {edu.ongoing && (
-                      <span className="bg-[rgba(224,53,0,0.12)] text-accent text-[11px] font-bold px-[10px] py-[2px] rounded-full border border-[rgba(224,53,0,0.3)] uppercase tracking-[0.5px]">
+                      <span className="bg-accent/10 text-accent text-[11px] font-bold px-[10px] py-[2px] rounded-full border border-accent/25 uppercase tracking-[0.5px]">
                         In Progress
                       </span>
                     )}
@@ -267,21 +274,23 @@ export const HomePage = () => {
       </section>
 
       {/* Footer / Contact */}
-      <footer className="bg-page px-8 pt-20 pb-10" id="contact">
+      <footer className="border-t border-white/[0.08] px-8 pt-20 pb-10" id="contact">
         <div className="max-w-[600px] mx-auto text-center">
-          <h2 className="text-[40px] font-extrabold mb-4 mobile:text-[30px]">
-            Let's <span className="text-accent">Work Together</span>
-          </h2>
-          <p className="text-muted text-[16px] mb-10">
-            Have a project in mind? I'd love to hear from you.
-          </p>
-          <a
-            href="mailto:Alirezakbarim@gmail.com"
-            className="inline-block px-8 py-[14px] rounded-xl text-[16px] font-semibold bg-accent text-white hover:bg-accent-dark transition-colors"
-          >
-            Get In Touch
-          </a>
-          <div className="h-px bg-rim mt-12 mb-6" />
+          <div className="bg-white/[0.04] backdrop-blur-md border border-white/10 rounded-2xl px-12 py-14 shadow-xl">
+            <h2 className="text-[40px] font-extrabold mb-4 mobile:text-[30px]">
+              Let's <span className="text-accent">Work Together</span>
+            </h2>
+            <p className="text-muted text-[16px] mb-10">
+              Have a project in mind? I'd love to hear from you.
+            </p>
+            <a
+              href="mailto:Alirezakbarim@gmail.com"
+              className="inline-block px-8 py-[14px] rounded-xl text-[16px] font-semibold bg-accent text-white hover:bg-accent-dark transition-colors shadow-[0_0_24px_rgba(224,53,0,0.35)]"
+            >
+              Get In Touch
+            </a>
+          </div>
+          <div className="h-px bg-white/10 mt-12 mb-6" />
           <p className="text-muted text-[13px]">
             © 2026 Alireza. All rights reserved.
           </p>
