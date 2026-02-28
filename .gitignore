@@ -20,7 +20,8 @@ yarn-error.log*
 tmp
 parcel-bundle-reports/
 .verdaccio_storage/
-sourcemap-info.jsonserver/blog.sqlite
+sourcemap-info.json
+server/blog.sqlite
 server/blog.sqlite-shm
 server/blog.sqlite-wal
 .env
