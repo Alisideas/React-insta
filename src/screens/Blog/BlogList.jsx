@@ -68,7 +68,7 @@ export const BlogList = () => {
             className="font-black leading-[0.95] uppercase mb-6"
             style={{ fontSize: "clamp(48px, 8vw, 100px)" }}
           >
-            Blog
+            Blogs
           </motion.h1>
           <motion.p variants={fadeUp} className="text-[16px] text-[#555] dark:text-[#999] leading-[1.8] max-w-[540px]">
             Thoughts on web development, design, and building things that matter.
