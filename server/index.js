@@ -10,7 +10,7 @@ const cloudinary = require("cloudinary").v2;
 const { User, Post } = require("./db");
 
 const app        = express();
-const PORT       = process.env.PORT        || 3001;
+const PORT       = process.env.SERVER_PORT  || 3001;
 const JWT_SECRET = process.env.JWT_SECRET  || "change-me-in-production";
 const CLIENT_URL = process.env.CLIENT_URL  || "http://localhost:1234";
 const MONGO_URI  = process.env.MONGODB_URI || "mongodb://localhost:27017/blog";
