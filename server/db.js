@@ -1,28 +1,46 @@
-const Database = require("better-sqlite3");
-const path = require("path");
+const mongoose = require("mongoose");
 
-const db = new Database(path.join(__dirname, "blog.sqlite"));
-db.pragma("journal_mode = WAL");
+// ── Transform helper: _id → id, timestamps → snake_case ──────────────────────
+function addTransform(schema) {
+  schema.set("toJSON", {
+    virtuals: true,
+    transform: (_, ret) => {
+      ret.id         = ret._id?.toString();
+      ret.created_at = ret.createdAt?.toISOString() ?? null;
+      ret.updated_at = ret.updatedAt?.toISOString() ?? null;
+      delete ret._id;
+      delete ret.__v;
+      delete ret.createdAt;
+      delete ret.updatedAt;
+    },
+  });
+}
 
-db.exec(`
-  CREATE TABLE IF NOT EXISTS users (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    username    TEXT UNIQUE NOT NULL,
-    password    TEXT NOT NULL,
-    created_at  TEXT DEFAULT (datetime('now'))
-  );
+// ── User ──────────────────────────────────────────────────────────────────────
+const userSchema = new mongoose.Schema(
+  {
+    username: { type: String, required: true, unique: true, trim: true },
+    password: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+addTransform(userSchema);
 
-  CREATE TABLE IF NOT EXISTS posts (
-    id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    title        TEXT NOT NULL,
-    slug         TEXT UNIQUE NOT NULL,
-    excerpt      TEXT DEFAULT '',
-    content      TEXT NOT NULL,
-    cover_image  TEXT DEFAULT '',
-    published    INTEGER DEFAULT 0,
-    created_at   TEXT DEFAULT (datetime('now')),
-    updated_at   TEXT DEFAULT (datetime('now'))
-  );
-`);
+// ── Post ──────────────────────────────────────────────────────────────────────
+const postSchema = new mongoose.Schema(
+  {
+    title:       { type: String, required: true },
+    slug:        { type: String, required: true, unique: true, trim: true },
+    excerpt:     { type: String, default: "" },
+    content:     { type: String, required: true },
+    cover_image: { type: String, default: "" },
+    published:   { type: Boolean, default: false },
+  },
+  { timestamps: true }
+);
+addTransform(postSchema);
 
-module.exports = db;
+module.exports = {
+  User: mongoose.model("User", userSchema),
+  Post: mongoose.model("Post", postSchema),
+};
