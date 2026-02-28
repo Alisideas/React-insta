@@ -1,28 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 import { motion, AnimatePresence } from "framer-motion";
+import { useDarkMode } from "../../hooks/useDarkMode";
 import "./style.css";
 
 const EMAILJS_SERVICE_ID  = "service_4wybl75";
 const EMAILJS_TEMPLATE_ID = "template_cuh0gy8";
 const EMAILJS_PUBLIC_KEY  = "z2tTgeKX1tEBNoZ1n";
-
-// ─── Dark mode hook ───────────────────────────────────────────────────────────
-function useDarkMode() {
-  const [dark, setDark] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("theme");
-      if (saved) return saved === "dark";
-      return window.matchMedia("(prefers-color-scheme: dark)").matches;
-    }
-    return true;
-  });
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    localStorage.setItem("theme", dark ? "dark" : "light");
-  }, [dark]);
-  return [dark, setDark];
-}
 
 // ─── Animation variants ───────────────────────────────────────────────────────
 const EASE = [0.25, 0.1, 0.25, 1];
@@ -292,6 +277,14 @@ export const HomePage = () => {
               {item}
             </motion.a>
           ))}
+          <motion.div variants={fadeIn}>
+            <Link
+              to="/blog"
+              className="text-[#555] dark:text-[#999] text-[14px] font-medium hover:text-[#111] dark:hover:text-white transition-colors"
+            >
+              Blog
+            </Link>
+          </motion.div>
         </motion.nav>
 
         {/* Right controls */}
