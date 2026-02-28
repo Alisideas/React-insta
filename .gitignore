@@ -21,3 +21,7 @@ tmp
 parcel-bundle-reports/
 .verdaccio_storage/
 sourcemap-info.json
+server/blog.sqlite
+server/blog.sqlite-shm
+server/blog.sqlite-wal
+.env
