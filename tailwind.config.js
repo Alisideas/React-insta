@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
@@ -19,6 +20,13 @@ module.exports = {
       },
       animation: {
         "spin-slow": "spin 20s linear infinite",
+        "marquee": "marquee 30s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%":   { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
       screens: {
         tablet: { max: "900px" },
