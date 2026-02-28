@@ -182,6 +182,10 @@ app.delete("/api/admin/blogs/:id", requireAuth, async (req, res) => {
 });
 
 // ── Start ──────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`Blog API → http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Blog API → http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
