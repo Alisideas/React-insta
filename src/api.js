@@ -31,6 +31,19 @@ export const api = {
   getBlog:           (slug)    => request(`/api/blogs/${slug}`),
 
   // Admin (protected)
+  uploadImage: (file) => {
+    const body = new FormData();
+    body.append("image", file);
+    return fetch(`${BASE}/api/admin/upload`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${getToken()}` },
+      body,
+    }).then(async (res) => {
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      return data;
+    });
+  },
   adminGetBlogs:     ()        => request("/api/admin/blogs",      { auth: true }),
   adminGetBlog:      (id)      => request(`/api/admin/blogs/${id}`, { auth: true }),
   adminCreateBlog:   (body)    => request("/api/admin/blogs",      { method: "POST",   body: JSON.stringify(body), auth: true }),

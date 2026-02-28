@@ -43,6 +43,8 @@ export const PostEditor = () => {
   const isEditing       = Boolean(id);
   const textareaRef     = useRef(null);
 
+  const fileInputRef = useRef(null);
+
   const [form, setForm] = useState({
     title: "", slug: "", excerpt: "", content: "", cover_image: "", published: false,
   });
@@ -50,6 +52,7 @@ export const PostEditor = () => {
   const [tab, setTab]               = useState("write"); // "write" | "preview"
   const [loading, setLoading]       = useState(isEditing);
   const [saving, setSaving]         = useState(false);
+  const [uploading, setUploading]   = useState(false);
   const [error, setError]           = useState("");
   const [saved, setSaved]           = useState(false);
 
@@ -84,6 +87,22 @@ export const PostEditor = () => {
   const handleSlugChange = (e) => {
     setSlugManual(true);
     setForm((prev) => ({ ...prev, slug: e.target.value }));
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError("");
+    try {
+      const { url } = await api.uploadImage(file);
+      setForm((p) => ({ ...p, cover_image: url }));
+    } catch (err) {
+      setError("Image upload failed: " + err.message);
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
   };
 
   // Markdown toolbar helpers
@@ -312,14 +331,37 @@ export const PostEditor = () => {
               {/* Cover image */}
               <div className="mt-4 flex flex-col gap-1">
                 <label className="text-[13px] font-medium text-[#555] dark:text-[#999]">
-                  Cover Image URL <span className="text-[11px] text-[#aaa]">(optional)</span>
+                  Cover Image <span className="text-[11px] text-[#aaa]">(optional)</span>
                 </label>
+
+                {/* Hidden file input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                />
+
+                {/* Upload button */}
+                <button
+                  type="button"
+                  disabled={uploading}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full py-2.5 rounded-xl border border-dashed border-black/20 dark:border-white/20 text-[13px] text-[#777] dark:text-[#888] hover:border-accent/50 hover:text-accent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {uploading ? "Uploading…" : "↑ Upload image"}
+                </button>
+
+                {/* URL fallback */}
                 <input
                   value={form.cover_image}
                   onChange={(e) => setForm((p) => ({ ...p, cover_image: e.target.value }))}
-                  placeholder="https://…"
+                  placeholder="or paste a URL…"
                   className={`${inputCls} text-[14px]`}
                 />
+
+                {/* Preview */}
                 {form.cover_image && (
                   <img
                     src={form.cover_image}
