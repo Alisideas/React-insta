@@ -32,14 +32,34 @@ const upload = multer({
   },
 });
 
-// ── Connect to MongoDB ─────────────────────────────────────────────────────────
-mongoose
-  .connect(MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => { console.error("MongoDB connection error:", err.message); process.exit(1); });
+// ── MongoDB connection (cached for serverless) ─────────────────────────────────
+let connectionPromise = null;
+function connectDB() {
+  if (!connectionPromise) {
+    connectionPromise = mongoose
+      .connect(MONGO_URI)
+      .then(() => console.log("MongoDB connected"))
+      .catch((err) => {
+        console.error("MongoDB connection error:", err.message);
+        connectionPromise = null; // allow retry on next request
+        throw err;
+      });
+  }
+  return connectionPromise;
+}
 
-app.use(cors({ origin: CLIENT_URL }));
+app.use(cors({ origin: CLIENT_URL || true }));
 app.use(express.json());
+
+// Ensure DB is connected before every request
+app.use(async (_req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch {
+    res.status(500).json({ error: "Database connection failed" });
+  }
+});
 
 // ── Auth middleware ────────────────────────────────────────────────────────────
 const requireAuth = (req, res, next) => {
