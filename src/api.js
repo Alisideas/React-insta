@@ -1,4 +1,4 @@
-const BASE = (typeof process !== "undefined" && process.env.API_URL) || "http://localhost:3001";
+const BASE = (typeof process !== "undefined" && process.env.API_URL) || "";
 
 function getToken() {
   return localStorage.getItem("admin_token");
