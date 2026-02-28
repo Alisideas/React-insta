@@ -4,7 +4,9 @@ const express  = require("express");
 const cors     = require("cors");
 const bcrypt   = require("bcryptjs");
 const jwt      = require("jsonwebtoken");
-const mongoose = require("mongoose");
+const mongoose   = require("mongoose");
+const multer     = require("multer");
+const cloudinary = require("cloudinary").v2;
 const { User, Post } = require("./db");
 
 const app        = express();
@@ -12,6 +14,23 @@ const PORT       = process.env.PORT        || 3001;
 const JWT_SECRET = process.env.JWT_SECRET  || "change-me-in-production";
 const CLIENT_URL = process.env.CLIENT_URL  || "http://localhost:1234";
 const MONGO_URI  = process.env.MONGODB_URI || "mongodb://localhost:27017/blog";
+
+// ── Cloudinary ────────────────────────────────────────────────────────────────
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+  fileFilter: (_, file, cb) => {
+    file.mimetype.startsWith("image/")
+      ? cb(null, true)
+      : cb(new Error("Only image files are allowed"));
+  },
+});
 
 // ── Connect to MongoDB ─────────────────────────────────────────────────────────
 mongoose
@@ -33,6 +52,22 @@ const requireAuth = (req, res, next) => {
     res.status(401).json({ error: "Invalid or expired token" });
   }
 };
+
+// ── Image upload ──────────────────────────────────────────────────────────────
+app.post("/api/admin/upload", requireAuth, upload.single("image"), async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No file provided" });
+  try {
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_stream(
+        { folder: "blog", resource_type: "image" },
+        (err, data) => (err ? reject(err) : resolve(data))
+      ).end(req.file.buffer);
+    });
+    res.json({ url: result.secure_url });
+  } catch (e) {
+    res.status(500).json({ error: "Upload failed: " + e.message });
+  }
+});
 
 // ── Setup / Auth ───────────────────────────────────────────────────────────────
 
