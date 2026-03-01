@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { use, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -18,18 +18,19 @@ function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
+export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
   const router = useRouter();
   const [dark, setDark]       = useDarkMode();
   const [post, setPost]       = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.getBlog(params.slug)
+    api.getBlog(slug)
       .then(setPost)
       .catch(() => router.replace("/blog"))
       .finally(() => setLoading(false));
-  }, [params.slug, router]);
+  }, [slug, router]);
 
   return (
     <div className="min-h-screen bg-[#f0ede8] dark:bg-[#0d0d0d] text-[#111] dark:text-[#f0ede8] transition-colors duration-300">
