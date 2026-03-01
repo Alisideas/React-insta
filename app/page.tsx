@@ -162,7 +162,7 @@ export default function HomePage() {
         className="sticky top-0 z-[100] flex items-center justify-between py-5 px-12 bg-[#f0ede8]/90 dark:bg-[#0d0d0d]/80 backdrop-blur-xl border-b border-black/10 dark:border-white/10 tablet:px-6"
       >
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2, ease: EASE }}
-          className="text-[20px] font-black tracking-[3px] text-accent">AA</motion.div>
+          className="text-[20px] font-black tracking-[3px] text-accent"><img width={40} height={40} src="/image/Logo.png" alt="logo.png" /></motion.div>
 
         <motion.nav initial="hidden" animate="show"
           variants={{ hidden: {}, show: { transition: { staggerChildren: 0.07, delayChildren: 0.3 } } }}
@@ -223,8 +223,8 @@ export default function HomePage() {
                   <span className="text-[72px] font-black text-white">AA</span>
                 </div>
               ) : (
-                <img src="/alireza.jpg" alt="Alireza Akbari" onError={() => setImgError(true)}
-                  className="w-full h-[420px] object-cover object-top rounded-2xl shadow-xl" />
+                <img src="/image/alireza.jpg" alt="Alireza Akbari" onError={() => setImgError(true)}
+                  className="w-full h-[420px] object-cover object-bottom rounded-2xl shadow-xl" />
               )}
               <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.9, duration: 0.4, ease: EASE }}
                 className="absolute -bottom-5 -left-5 bg-accent text-white rounded-2xl px-5 py-4 shadow-xl">
@@ -411,7 +411,7 @@ export default function HomePage() {
               <p className="text-[#555] text-[13px]">© 2026 Alireza Akbari. All rights reserved.</p>
               <div className="flex items-center gap-6">
                 {["GitHub","LinkedIn","Dribbble"].map((s) => (
-                  <span key={s} className="text-[13px] text-[#555] hover:text-[#999] transition-colors cursor-default">{s}</span>
+                  <span onClick={() => window.open(s === "GitHub" ? "https://github.com/alisideas" : s === "LinkedIn" ? "https://linkedin.com/in/alirezaakbariii" : "https://dribbble.com/alisideas", "_blank")} key={s} className="text-[13px] text-[#555] hover:text-[#999] transition-colors cursor-default">{s}</span>
                 ))}
               </div>
             </motion.div>
