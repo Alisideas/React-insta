@@ -1,17 +1,19 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
-  const post = await prisma.post.findUnique({ where: { id: params.id } });
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const post = await prisma.post.findUnique({ where: { id } });
   if (!post) return NextResponse.json({ error: "Post not found" }, { status: 404 });
   return NextResponse.json({ ...post, createdAt: post.createdAt.toISOString(), updatedAt: post.updatedAt.toISOString() });
 }
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const { title, slug, excerpt, content, coverImage, published } = await req.json();
   try {
     const post = await prisma.post.update({
-      where: { id: params.id },
+      where: { id },
       data: { title, slug, excerpt: excerpt ?? "", content, coverImage: coverImage ?? "", published: Boolean(published) },
     });
     if (!post) return NextResponse.json({ error: "Post not found" }, { status: 404 });
@@ -24,7 +26,8 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
-export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
-  await prisma.post.delete({ where: { id: params.id } });
+export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  await prisma.post.delete({ where: { id } });
   return NextResponse.json({ success: true });
 }
