@@ -152,6 +152,54 @@ export default function HomePage() {
     { degree: "Bachelor's Degree — Computer Engineering",   school: "İstanbul Aydin University", period: "Jan 2020 – Dec 2024", ongoing: false },
   ];
 
+  const certificates = [
+    { name: "React — The Complete Guide", issuer: "Udemy", date: "2023", credential: "" },
+    { name: "Next.js & React — The Complete Guide", issuer: "Udemy", date: "2023", credential: "" },
+    { name: "Flutter & Dart — The Complete Guide", issuer: "Udemy", date: "2022", credential: "" },
+    { name: "The Complete JavaScript Course", issuer: "Udemy", date: "2021", credential: "" },
+    { name: "UI / UX Design Bootcamp", issuer: "Coursera", date: "2022", credential: "" },
+    { name: "Node.js, Express, MongoDB & More", issuer: "Udemy", date: "2023", credential: "" },
+  ];
+
+  const projects = [
+    {
+      name: "Mishov Markets Platform",
+      description: "A high-performance markets platform built for Mishov. Delivered a full redesign of the frontend with a focus on visual consistency, speed, and user experience.",
+      tags: ["React", "UI/UX", "Web Design"],
+      link: "",
+    },
+    {
+      name: "NiaTech Web Application",
+      description: "Full-stack web application developed at NiaTech. Built with Next.js on the frontend, custom REST APIs on the backend, and a PostgreSQL database layer.",
+      tags: ["Next.js", "Node.js", "PostgreSQL", "APIs"],
+      link: "",
+    },
+    {
+      name: "Dextern Mobile App",
+      description: "Cross-platform mobile application built with Flutter for iOS and Android. Integrated with a REST backend and designed with a clean, modern UI.",
+      tags: ["Flutter", "Dart", "REST API"],
+      link: "",
+    },
+    {
+      name: "Portfolio & Blog",
+      description: "This very site — a custom-built portfolio with a headless blog, admin dashboard, image uploads via Cloudinary, and authentication. Built from scratch with Next.js.",
+      tags: ["Next.js", "Prisma", "Cloudinary", "TypeScript"],
+      link: "",
+    },
+    {
+      name: "WordPress E-commerce Sites",
+      description: "Multiple client e-commerce and marketing websites built with WordPress, custom PHP themes, and Elementor. Focused on performance, SEO, and responsive design.",
+      tags: ["WordPress", "PHP", "Elementor", "WooCommerce"],
+      link: "",
+    },
+    {
+      name: "UI/UX Design System",
+      description: "A reusable component library and design system created in Figma and implemented in React. Used as the foundation for multiple client projects.",
+      tags: ["Figma", "React", "Tailwind CSS"],
+      link: "",
+    },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col bg-[#f0ede8] dark:bg-[#0d0d0d] text-[#111] dark:text-[#f0ede8] transition-colors duration-300 overflow-x-hidden">
       <AnimatePresence>{contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}</AnimatePresence>
@@ -168,7 +216,7 @@ export default function HomePage() {
           variants={{ hidden: {}, show: { transition: { staggerChildren: 0.07, delayChildren: 0.3 } } }}
           className="flex items-center gap-8 tablet:gap-5 mobile:hidden"
         >
-          {["About","Skills","Experience","Education"].map((item) => (
+          {["About","Skills","Experience","Education","Certificates","Projects"].map((item) => (
             <motion.a key={item} href={`#${item.toLowerCase()}`} variants={fadeIn}
               className="text-[#555] dark:text-[#999] text-[14px] font-medium hover:text-[#111] dark:hover:text-white transition-colors">
               {item}
@@ -391,6 +439,77 @@ export default function HomePage() {
               </motion.div>
             ))}
           </div>
+        </motion.div>
+      </section>
+
+      {/* ── CERTIFICATES ── */}
+      <section className="border-t border-black/10 dark:border-white/10" id="certificates">
+        <motion.div className="px-12 py-24 max-w-[1200px] mx-auto w-full tablet:px-6" initial="hidden" whileInView="show" viewport={VP} variants={stagger}>
+          <motion.div variants={fadeUp} className="mb-16">
+            <p className="text-[12px] uppercase tracking-[3px] text-accent font-semibold mb-2">Credentials</p>
+            <h2 className="text-[42px] font-black leading-[1.0] mobile:text-[30px]">Certificates</h2>
+          </motion.div>
+          <motion.div variants={stagger} className="grid grid-cols-3 gap-5 tablet:grid-cols-2 mobile:grid-cols-1">
+            {certificates.map((cert, i) => (
+              <motion.div key={i} variants={fadeUp} whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className="group p-7 rounded-2xl bg-white dark:bg-white/[0.04] border border-black/10 dark:border-white/10 hover:border-accent/50 transition-all flex flex-col gap-4">
+                <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center text-[18px]">🏅</div>
+                <div>
+                  <h3 className="text-[15px] font-bold text-[#111] dark:text-white leading-snug group-hover:text-accent transition-colors">{cert.name}</h3>
+                  <p className="text-[13px] font-semibold text-accent mt-1">{cert.issuer}</p>
+                </div>
+                <div className="mt-auto flex items-center justify-between">
+                  <span className="text-[12px] text-[#777] dark:text-[#888] uppercase tracking-[1px]">{cert.date}</span>
+                  {cert.credential && (
+                    <a href={cert.credential} target="_blank" rel="noopener noreferrer"
+                      className="text-[12px] font-semibold text-accent border border-accent/30 px-3 py-1 rounded-full hover:bg-accent hover:text-white transition-all">
+                      View →
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* ── PROJECTS ── */}
+      <section className="border-t border-black/10 dark:border-white/10" id="projects">
+        <motion.div className="px-12 py-24 max-w-[1200px] mx-auto w-full tablet:px-6" initial="hidden" whileInView="show" viewport={VP} variants={stagger}>
+          <motion.div variants={fadeUp} className="flex items-end justify-between mb-16 mobile:flex-col mobile:items-start mobile:gap-2">
+            <div>
+              <p className="text-[12px] uppercase tracking-[3px] text-accent font-semibold mb-2">Portfolio</p>
+              <h2 className="text-[42px] font-black leading-[1.0] mobile:text-[30px]">Projects</h2>
+            </div>
+            <span className="text-[14px] text-[#777] dark:text-[#888]">Selected work</span>
+          </motion.div>
+          <motion.div variants={stagger} className="grid grid-cols-2 gap-6 tablet:grid-cols-1">
+            {projects.map((project, i) => (
+              <motion.div key={i} variants={fadeUp} whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className="group p-8 rounded-2xl bg-white dark:bg-white/[0.04] border border-black/10 dark:border-white/10 hover:border-accent/50 transition-all flex flex-col gap-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-[20px] flex-shrink-0">
+                    {["🚀","⚡","📱","🌐","🛒","🎨"][i % 6]}
+                  </div>
+                  {project.link && (
+                    <a href={project.link} target="_blank" rel="noopener noreferrer"
+                      className="text-[12px] font-semibold text-[#777] dark:text-[#888] border border-black/15 dark:border-white/15 px-3 py-1 rounded-full hover:border-accent hover:text-accent transition-all flex-shrink-0">
+                      Visit →
+                    </a>
+                  )}
+                </div>
+                <div>
+                  <h3 className="text-[18px] font-bold text-[#111] dark:text-white group-hover:text-accent transition-colors leading-snug">{project.name}</h3>
+                  <p className="text-[14px] text-[#555] dark:text-[#999] leading-[1.7] mt-2">{project.description}</p>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-auto pt-2">
+                  {project.tags.map((tag) => (
+                    <span key={tag} className="text-[12px] font-medium px-3 py-1 rounded-full border border-black/15 dark:border-white/15 text-[#555] dark:text-[#999]">{tag}</span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
       </section>
 
